@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,6 +9,7 @@ public class TPSCameraController : MonoBehaviour
 {
     [SerializeField] Transform cameraRoot;
     [SerializeField] float mouseSensitivity;
+    [SerializeField] GameObject TPSCamera;
 
     private Vector2 inputDir;
     private float xRotation;
@@ -32,5 +34,16 @@ public class TPSCameraController : MonoBehaviour
     private void OnLook(InputValue value)
     {
         inputDir = value.Get<Vector2>();
+    }
+    private void OnZoom(InputValue value)
+    {
+        if (value.isPressed)
+        {
+            TPSCamera.GetComponent<CinemachineVirtualCamera>().Priority = 9;
+        }
+        else
+        {
+            TPSCamera.GetComponent<CinemachineVirtualCamera>().Priority = 20;
+        }
     }
 }
