@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -9,6 +10,7 @@ public class PlayerController : MonoBehaviour
     // CharacterController는 월드기준으로 움직인다. 유일하게 transform만 자기자신기준의 좌표를 가진다.
     [SerializeField] CharacterController controller;
     [SerializeField] Animator animator;
+    [SerializeField] TwoBoneIKConstraint leftHand;
 
     [Header("Spec")]
     [SerializeField] float moveSpeed;
@@ -78,6 +80,7 @@ public class PlayerController : MonoBehaviour
     {
         // 재장전 구현
         animator.SetTrigger("Reload");
+
     }
     private void OnMove(InputValue value)
     {
@@ -108,6 +111,15 @@ public class PlayerController : MonoBehaviour
     }
     private void OnReload(InputValue value)
     {
-        Reload();   
+        if (value.isPressed)
+        {
+            Reload();
+            leftHand.weight = 0f;
+        }
+        else
+        {
+            leftHand.weight = 1f;
+        }
     }
+
 }

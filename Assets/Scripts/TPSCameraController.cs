@@ -8,11 +8,21 @@ using UnityEngine.InputSystem;
 public class TPSCameraController : MonoBehaviour
 {
     [SerializeField] Transform cameraRoot;
+    [SerializeField] Transform target;
+    [SerializeField] float distance;
     [SerializeField] float mouseSensitivity;
     [SerializeField] GameObject TPSCamera;
 
     private Vector2 inputDir;
     private float xRotation;
+    private void Update()
+    {
+        SetTargetPos();
+    }
+    private void SetTargetPos()
+    {
+        target.position = Camera.main.transform.position + Camera.main.transform.forward * distance;
+    }
     private void OnEnable()
     {
         Cursor.lockState = CursorLockMode.Locked;
