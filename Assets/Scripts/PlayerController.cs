@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using UnityEngine.InputSystem;
@@ -11,6 +10,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] CharacterController controller;
     [SerializeField] Animator animator;
     [SerializeField] TwoBoneIKConstraint leftHand;
+    [SerializeField] WeaponHolder weaponHolder;
 
     [Header("Spec")]
     [SerializeField] float moveSpeed;
@@ -75,6 +75,7 @@ public class PlayerController : MonoBehaviour
     {
         // ÃÑ½î´Â ·ÎÁ÷ ±¸Çö
         animator.SetTrigger("Fire");
+        weaponHolder.Fire();
     }
     public void Reload()
     {
@@ -111,15 +112,16 @@ public class PlayerController : MonoBehaviour
     }
     private void OnReload(InputValue value)
     {
-        if (value.isPressed)
-        {
-            Reload();
-            leftHand.weight = 0f;
-        }
-        else
-        {
-            leftHand.weight = 1f;
-        }
+
+        Reload();
+        StartCoroutine(ReloadCoroutine());
+
+    }
+    IEnumerator ReloadCoroutine()
+    {
+        leftHand.weight = 0f;
+        yield return new WaitForSeconds(3.3f);
+        leftHand.weight = 1f;
     }
 
 }
