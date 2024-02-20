@@ -35,7 +35,7 @@ public class Gun : MonoBehaviour
             {
                 rigid.AddForceAtPosition(-hitInfo.normal * 10f, hitInfo.point, ForceMode.Impulse);
             }
-            // 맞은 부분에 박히게 해줌
+            // 맞은 부분에 박히게 해줌 
             //hitPoint.position = hitInfo.point;
         }
         else
