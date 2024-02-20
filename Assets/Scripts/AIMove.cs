@@ -6,6 +6,7 @@ using UnityEngine;
 public class AIMove : MonoBehaviour
 {
     [SerializeField] Transform My;
+    [SerializeField] float speed;
     private bool isOk = true;
     private void Start()
     {
@@ -23,11 +24,11 @@ public class AIMove : MonoBehaviour
         }
         if (My.position.x < 5 && isOk)
         {
-            transform.Translate(Vector3.right * Time.deltaTime, Space.World);
+            transform.Translate(Vector3.right * speed * Time.deltaTime, Space.World);
         }
         else if (!isOk && My.position.x > 0)
         {
-            transform.Translate(Vector3.right * -1 * Time.deltaTime, Space.World);
+            transform.Translate(Vector3.right * -speed * Time.deltaTime, Space.World);
         }
     }
 
