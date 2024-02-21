@@ -14,7 +14,6 @@ public class Monster : MonoBehaviour, IDamageble
     private void Die()
     {
         Instantiate(hitEffect, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-        
+        Destroy(gameObject);        
     }
 }

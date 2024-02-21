@@ -28,46 +28,67 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjectPooler : MonoBehaviour 
+namespace Digin
 {
-    private PooledObject prefab;
-    // 보관하기위해 Stack이나 Queue를 사용해준다. (취향 차이)
-    private Stack<PooledObject> ObjectPool;
-    // 몇개를 저장할지 정해둔다.
-    private int poolSize = 100;
-
-    // 저장해주는 함수
-    public void CreatePool()
+    public class ObjectPooler : MonoBehaviour
     {
-        ObjectPool = new Stack<PooledObject>(poolSize);
-        for(int i = 0; i < poolSize; i++)
+        private PooledObject prefab;
+        // 보관하기위해 Stack이나 Queue를 사용해준다. (취향 차이)
+        private Stack<PooledObject> ObjectPool;
+        // 몇개를 저장할지 정해둔다.
+        private int poolSize = 100;
+
+        // 저장해주는 함수
+        public void CreatePool()
         {
-            PooledObject instance= Instantiate(prefab);
-            // 비활성화 해서 저장해놓는다. (활성화해서 넣으면 게임씬에서 활용중이니 이런 짓을 할 이유가 없다.)
-            instance.gameObject.SetActive(false);
-            ObjectPool.Push(instance);
+            ObjectPool = new Stack<PooledObject>(poolSize);
+            for (int i = 0; i < poolSize; i++)
+            {
+                PooledObject instance = Instantiate(prefab);
+                // 비활성화 해서 저장해놓는다. (활성화해서 넣으면 게임씬에서 활용중이니 이런 짓을 할 이유가 없다.)
+                instance.gameObject.SetActive(false);
+                ObjectPool.Push(instance);
+            }
+        }
+
+        // 꺼내주는 함수
+        public PooledObject GetPool()
+        {
+            // 꺼내서 줄때 활성화 해준다.
+
+            if (ObjectPool.Count > 0)
+            {
+                PooledObject instance = ObjectPool.Pop();
+                instance.gameObject.SetActive(true);
+                return instance;
+            }
+            // 내가 정한 크기 이상이면 더 만들어준다.
+            else
+            {
+                return Instantiate(prefab);
+            }
+        }
+
+        // 반납해주는 함수
+        public void ReturnPool(PooledObject instance)
+        {
+            // 반납할때는 비활성화 시켜주고 넣어준다.
+
+            if (ObjectPool.Count > poolSize)
+            {
+                instance.gameObject.SetActive(false);
+                ObjectPool.Push(instance);
+            }
+            // 내가 정한 크기 이상으로 생성되었으면 삭제
+            else
+            {
+                Destroy(instance);
+            }
         }
     }
 
-    // 꺼내주는 함수
-    public PooledObject GetPool()
+    public class PooledObject : MonoBehaviour
     {
-        // 꺼내서 줄때 활성화 해준다.
-        PooledObject instance = ObjectPool.Pop();
-        instance.gameObject.SetActive(true);
-        return instance;        
+        // 생성, 삭제가 빈번한 클래스
     }
-
-    // 반납해주는 함수
-    public void ReturnPool(PooledObject instance)
-    {
-        // 반납할때는 비활성화 시켜주고 넣어준다.
-        instance.gameObject.SetActive(false);
-        ObjectPool.Push(instance);
-    }
-}
-
-public class PooledObject : MonoBehaviour
-{
-    // 생성, 삭제가 빈번한 클래스
 }
