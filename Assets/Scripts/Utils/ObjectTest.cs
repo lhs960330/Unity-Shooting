@@ -6,7 +6,7 @@ using UnityEngine.Rendering;
 public class ObjectTest : MonoBehaviour
 {
     public PooledObject hitEffectPrefab;
-
+    
     private void Start()
     {
         // 특정 파일에서 가져오는 방법

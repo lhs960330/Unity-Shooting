@@ -6,8 +6,6 @@ public class PoolManager : MonoBehaviour
 {
     private Dictionary<string, ObjectPooler> poolDic = new Dictionary<string, ObjectPooler>();
        
-
-
     public void CreatePool(string name, PooledObject prefab, int size)
     {
         // 빈 오브젝트 생성
@@ -23,7 +21,8 @@ public class PoolManager : MonoBehaviour
     {
         ObjectPooler pooler = poolDic[name];
         // 또 실수함
-        Destroy(pooler.gameObject);
+        if (pooler != null)
+            Destroy(pooler.gameObject);
 
         poolDic.Remove(name);
     }
